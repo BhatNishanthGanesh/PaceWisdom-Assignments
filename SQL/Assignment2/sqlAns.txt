@@ -1,0 +1,77 @@
+SELECT C.Customer_Name, P. Product_Name
+FROM CUSTOMER C, PRODUCT P, ORDER O, ORDER_DETAILS OD
+WHERE C.Customer_Id = O.Customer_Id AND
+O.Order_Id = OD.Order_Id AND
+OD.Product_Id = P.Product_Id;
+
+
+SELECT OD.Order_Id, O.Ordered_Date, P.Product_Id*OD.Quantity AS product_price
+FROM ORDER_DETAILS OD, ORDER O, PRODUCT P
+WHERE O.Order_Id = OD.Order_Id AND
+OD.Product_Id = P.Product_Id;
+
+
+SELECT P.PRODUCT_ID
+FROM PRODUCT P LEFT JOIN ORDER_DETAILS OD
+ON P.PRODUCT_ID = OD.PRODUCT_ID
+WHERE OD.ORDER_ID IS NULL;
+
+
+SELECT c.Customer_Id, C.Customer_Name
+FROM CUSTOMER C LEFT JOIN ORDER O
+ON C.Customer_Id = OD.Product_Id
+WHERE O.Order_Id IS NULL;
+
+
+SELECT C.Customer_Name, SUM(OD.Quantity*P.Price) AS Total_amt
+FROM CUSTOMER C, PRODUCT P, ORDER_DETAILS OD, ORDER O
+WHERE C.Customer_Id = O.Customer_Id AND
+O.Order_Id = OD.Order_Id AND
+OD.Product_Id = P.Product_Id
+GROUP BY C.Customer_Id;
+
+(
+    SELECT C.Customer_Name, O.Ordered_Date
+    FROM CUSTOMER C, ORDER D
+    WHERE C.Customer_Id = O.Customer_Id
+    ORDER BY (O.Ordered_Date)
+    LIMIT 1
+)
+
+UNION
+(
+    SELECT C.Customer_Name, O.Ordered_Date
+    FROM CUSTOMER C, ORDER D
+    WHERE C.Customer_Id = O.Customer_Id
+    ORDER BY (O.Ordered_Date) DESC
+    LIMIT 1
+
+);
+
+
+SELECT C.Customer_Id, C.Customer_Name, COUNT(*) AS TOTAL_ORDERS
+FROM CUSTOMER C, PRODUCT P, ORDER D, ORDER_DETAILS OD
+WHERE C.Customer_Id = O.Customer_Id 
+GROUP BY C.Customer_Id
+ORDER BY TOTAL_ORDERS
+LIMIT 1;
+
+
+SELECT C.Customer_Id, C.Customer_Name, COUNT(O.Order_Id) AS total_orders, EXTRACT(YEAR FROM O.Ordered_Date) AS order_year
+FROM CUSTOMER C, ORDER D
+WHERE C.Customer_Id = O.Customer_Id
+GROUP BY O.Customer_Id, O.order_year
+HAVING COUNT(*)>1;
+
+
+SELECT MONTHNAME(Ordered_Date) AS Order_month, COUNT(*) AS total_order
+FROM ORDER
+GROUP BY Order_month
+ORDER BY total_order DESC
+LIMIT 1;
+
+SELECT P.Product_Id, p.product_price
+FROM PRODUCT P, ORDER_DETAILS OD
+WHERE P.Product_Id = OD.Product_Id
+ORDER BY P.product_price DESC
+LIMIT 1;

@@ -1,0 +1,107 @@
+SELECT Ename, Sal
+FROM EMP
+WHERE DeptNo = 10 OR DeptNo = 20;
+
+
+SELECT D.DeptNo, D.name, D.Loc
+FROM DEPT D, EMP E
+WHERE D.DeptNo = E.DeptNo
+GROUP BY(D.DeptNo)
+HAVING COUNT(*)>1;
+
+
+SELECT Ename,Sal,EmpNo
+FROM EMP
+WHERE Ename LIKE 'S%';
+
+
+
+SELECT Ename,Sal,EmpNo
+FROM Emp
+WHERE DATEDIFF(CURRDATE(),Hire_Date)>730;
+
+
+
+SELECT REPLACE(Ename, 'a','#') AS new_name
+FROM EMP;
+
+
+SELECT Ename , Mgr
+FROM Emp;
+
+
+SELECT D.Dname, SUM(E.Sal) AS TOTAL_SALARY 
+FROM DEPT D, EMP EMP
+WHERE D.DeptNo = E.DeptNo
+GROUP BY(E.DeptNo);
+
+
+SELECT D.DeptNo, Dname, Loc, EmpNo, Ename, Sal, Hire_Date
+FROM Dept D, Emp E
+WHERE D.DeptNo = E.DeptNo
+AND E.DeptNo = NULL;
+
+UPDATE EMP
+SET Sal = Sal+(0.1* Sal);
+
+
+DELETE FROM EMP
+WHERE EmpNo IN
+(
+    SELECT E.EmpNo
+    FROM EMP E, DEPT D
+    WHERE D.DeptNo = E.DeptNo   
+    AND D.Loc = 'Chennai'
+);
+
+
+SELECT Ename, SUM(Sal+commission) AS GROSS_SALARY
+FROM EMP;
+
+
+ALTER TABLE EMP
+MODIFY COLUMN Ename VARCHAR(250);
+
+
+SELECT NOW();
+
+
+CREATE TABLE STUDENT(
+    Student_name VARCHAR(10),
+    Student_USN VARCHAR(10),
+    DEPT VARCHAR(4),
+    SECTION CHAR(2),
+    PHONE NUMBER(10),
+);
+
+
+
+
+SELECT COUNT(*) 
+FROM EMP
+WHERE Sal>10000;
+
+
+SELECT MAX(Sal), MIN(sal), AVG(sal)
+FROM EMP;
+
+
+
+SELECT D.Loc, COUNT(*)
+FROM DEPT D, EMP E
+WHERE D.DeptNo = E.DeptNo
+GROUP BY(D.Loc);
+
+
+SELECT Ename
+FROM EMP
+ORDER BY Ename DESC;
+
+
+CREATE TABLE EMP_BKP AS
+SELECT * 
+FROM EMP;
+
+
+SELECT CONCAT(SUBSTRING(Ename,1,3),Sal) AS Ans
+FROM EMP;
